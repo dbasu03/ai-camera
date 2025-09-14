@@ -88,8 +88,8 @@ export default function Home() {
               <Camera className="h-6 w-6 sm:h-8 sm:w-8 text-primary-600" />
             </div>
             <div className="text-center sm:text-left">
-              <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">AI Camera</h1>
-              <p className="text-sm sm:text-base text-gray-600 hidden sm:block">Transform your photos with iPhone-style enhancement</p>
+              <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">camera.AI</h1>
+              <p className="text-sm sm:text-base text-gray-600 hidden sm:block">Transform your photos with AI</p>
             </div>
           </div>
         </div>
