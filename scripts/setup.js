@@ -12,7 +12,7 @@ if (!fs.existsSync(envPath)) {
   const envExample = fs.readFileSync(path.join(process.cwd(), 'env.example'), 'utf8')
   fs.writeFileSync(envPath, envExample)
   console.log('✅ Created .env.local from env.example')
-  console.log('⚠️  Please edit .env.local and add your Hugging Face API key (optional)\n')
+  console.log('ℹ️  .env.local is optional - the app works without it\n')
 } else {
   console.log('✅ .env.local already exists\n')
 }
@@ -29,7 +29,6 @@ if (!fs.existsSync(nodeModulesPath)) {
 console.log('🎉 Setup complete!')
 console.log('\nNext steps:')
 console.log('1. Run: npm install (if not already done)')
-console.log('2. Edit .env.local with your API keys (optional)')
-console.log('3. Run: npm run dev')
-console.log('4. Open: http://localhost:3000')
-console.log('\nHappy coding! 🎨')
+console.log('2. Run: npm run dev')
+console.log('3. Open: http://localhost:3000')
+console.log('\nThe app is ready to use! No external API keys needed. 🎨')

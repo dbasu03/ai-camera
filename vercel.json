@@ -4,8 +4,5 @@
       "maxDuration": 30
     }
   },
-  "regions": ["iad1"],
-  "env": {
-    "HUGGINGFACE_API_KEY": "@huggingface_api_key"
-  }
+  "regions": ["iad1"]
 }

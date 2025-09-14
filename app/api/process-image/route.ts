@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { HfInference } from '@huggingface/inference'
 import { 
   enhanceImage, 
   validateImage, 
@@ -8,41 +7,8 @@ import {
   bufferToBase64 
 } from '@/lib/imageUtils'
 
-// Initialize Hugging Face inference
-const hf = new HfInference(process.env.HUGGINGFACE_API_KEY)
-
-// Alternative: Use Hugging Face model (uncomment and configure as needed)
-async function enhanceImageWithHF(imageBuffer: Buffer): Promise<Buffer> {
-  try {
-    // Example using a real Hugging Face model
-    // Replace with actual model ID from Hugging Face Hub
-    const modelId = 'stabilityai/stable-diffusion-xl-base-1.0' // Placeholder
-    
-    // Convert buffer to base64 for HF API
-    const base64Image = imageBuffer.toString('base64')
-    const dataUrl = `data:image/png;base64,${base64Image}`
-    
-    // Note: This is a placeholder - you'd need to find an appropriate
-    // image enhancement model on Hugging Face Hub
-    const result = await hf.imageToImage({
-      model: modelId,
-      inputs: dataUrl,
-      parameters: {
-        strength: 0.8,
-        guidance_scale: 7.5,
-      }
-    })
-    
-    // Convert result back to buffer
-    const response = await fetch(result)
-    const arrayBuffer = await response.arrayBuffer()
-    return Buffer.from(arrayBuffer)
-  } catch (error) {
-    console.error('Error with HF model:', error)
-    // Fallback to our enhancement function
-    return enhanceImage(imageBuffer)
-  }
-}
+// iPhone-style enhancement using Sharp image processing
+// This provides high-quality enhancement without external API dependencies
 
 export async function POST(request: NextRequest) {
   try {

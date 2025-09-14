@@ -20,16 +20,16 @@ export default function DownloadButton({ onDownload }: DownloadButtonProps) {
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full btn-primary flex items-center justify-center space-x-2"
+        className="w-full btn-primary flex items-center justify-center space-x-2 text-sm sm:text-base"
       >
-        <Download className="h-5 w-5" />
+        <Download className="h-4 w-4 sm:h-5 sm:w-5" />
         <span>Download Enhanced Image</span>
         <ChevronDown className={`h-4 w-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
       </button>
 
       {isOpen && (
         <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-lg shadow-lg border border-gray-200 z-10">
-          <div className="p-2">
+          <div className="p-1 sm:p-2">
             {formats.map((format) => (
               <button
                 key={format.value}
@@ -37,10 +37,10 @@ export default function DownloadButton({ onDownload }: DownloadButtonProps) {
                   onDownload(format.value)
                   setIsOpen(false)
                 }}
-                className="w-full text-left px-4 py-3 hover:bg-gray-50 rounded-lg transition-colors"
+                className="w-full text-left px-3 sm:px-4 py-2 sm:py-3 hover:bg-gray-50 rounded-lg transition-colors"
               >
-                <div className="font-medium text-gray-900">{format.label}</div>
-                <div className="text-sm text-gray-600">{format.description}</div>
+                <div className="font-medium text-gray-900 text-sm sm:text-base">{format.label}</div>
+                <div className="text-xs sm:text-sm text-gray-600">{format.description}</div>
               </button>
             ))}
           </div>
