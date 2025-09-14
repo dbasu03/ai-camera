@@ -5,6 +5,7 @@ import { Upload, Download, Camera, Sparkles, Loader2 } from 'lucide-react'
 import ImageUpload from '@/components/ImageUpload'
 import ImagePreview from '@/components/ImagePreview'
 import DownloadButton from '@/components/DownloadButton'
+import type { ImageFormat } from '@/types'
 
 export default function Home() {
   const [originalImage, setOriginalImage] = useState<string | null>(null)
@@ -65,7 +66,7 @@ export default function Home() {
     }
   }
 
-  const handleDownload = (format: 'png' | 'jpg' | 'jpeg') => {
+  const handleDownload = (format: ImageFormat) => {
     if (!processedImage) return
 
     const link = document.createElement('a')

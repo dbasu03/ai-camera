@@ -6,6 +6,7 @@ import {
   base64ToBuffer, 
   bufferToBase64 
 } from '@/lib/imageUtils'
+import type { ProcessImageResponse } from '@/types'
 
 // iPhone-style enhancement using Sharp image processing
 // This provides high-quality enhancement without external API dependencies
@@ -48,7 +49,7 @@ export async function POST(request: NextRequest) {
     // Convert enhanced image back to base64
     const enhancedDataUrl = bufferToBase64(enhancedBuffer, 'image/png')
 
-    return NextResponse.json({
+    const response: ProcessImageResponse = {
       success: true,
       processedImage: enhancedDataUrl,
       originalFormat: metadata.format,
@@ -57,7 +58,9 @@ export async function POST(request: NextRequest) {
         height: metadata.height
       },
       enhancedSize: enhancedBuffer.length
-    })
+    }
+
+    return NextResponse.json(response)
 
   } catch (error) {
     console.error('Error processing image:', error)

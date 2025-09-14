@@ -2,18 +2,19 @@
 
 import { useState } from 'react'
 import { Download, ChevronDown } from 'lucide-react'
+import type { ImageFormat } from '@/types'
 
 interface DownloadButtonProps {
-  onDownload: (format: 'png' | 'jpg' | 'jpeg') => void
+  onDownload: (format: ImageFormat) => void
 }
 
 export default function DownloadButton({ onDownload }: DownloadButtonProps) {
   const [isOpen, setIsOpen] = useState(false)
 
-  const formats = [
-    { value: 'png' as const, label: 'PNG (High Quality)', description: 'Best for photos with transparency' },
-    { value: 'jpg' as const, label: 'JPG (Standard)', description: 'Good balance of quality and file size' },
-    { value: 'jpeg' as const, label: 'JPEG (Compatible)', description: 'Maximum compatibility' },
+  const formats: Array<{ value: ImageFormat; label: string; description: string }> = [
+    { value: 'png', label: 'PNG (High Quality)', description: 'Best for photos with transparency' },
+    { value: 'jpg', label: 'JPG (Standard)', description: 'Good balance of quality and file size' },
+    { value: 'jpeg', label: 'JPEG (Compatible)', description: 'Maximum compatibility' },
   ]
 
   return (

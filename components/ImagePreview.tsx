@@ -65,7 +65,7 @@ export default function ImagePreview({
         ) : (
           <div className="relative">
             <img
-              src={showOriginal ? originalImage : processedImage}
+              src={showOriginal ? originalImage || '' : processedImage || ''}
               alt={showOriginal ? 'Original image' : 'Enhanced image'}
               className="w-full h-48 sm:h-56 lg:h-64 object-cover rounded-lg sm:rounded-xl shadow-lg"
             />

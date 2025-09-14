@@ -1,19 +1,5 @@
 import sharp from 'sharp'
-
-export interface ImageMetadata {
-  width: number
-  height: number
-  format: string
-  size: number
-}
-
-export interface EnhancementOptions {
-  brightness?: number
-  saturation?: number
-  sharpness?: number
-  contrast?: number
-  noiseReduction?: boolean
-}
+import type { ImageMetadata, EnhancementOptions, ImageFormat } from '@/types'
 
 /**
  * Get image metadata without processing
@@ -124,7 +110,7 @@ export async function enhanceImage(
  */
 export async function convertImageFormat(
   buffer: Buffer,
-  format: 'png' | 'jpg' | 'jpeg',
+  format: ImageFormat,
   quality: number = 95
 ): Promise<Buffer> {
   let pipeline = sharp(buffer)
