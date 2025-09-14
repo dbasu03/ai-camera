@@ -5,7 +5,8 @@ import { Upload, Download, Camera, Sparkles, Loader2 } from 'lucide-react'
 import ImageUpload from '@/components/ImageUpload'
 import ImagePreview from '@/components/ImagePreview'
 import DownloadButton from '@/components/DownloadButton'
-import type { ImageFormat } from '@/types'
+
+type ImageFormat = 'png' | 'jpg' | 'jpeg'
 
 export default function Home() {
   const [originalImage, setOriginalImage] = useState<string | null>(null)

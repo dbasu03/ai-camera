@@ -6,7 +6,17 @@ import {
   base64ToBuffer, 
   bufferToBase64 
 } from '@/lib/imageUtils'
-import type { ProcessImageResponse } from '@/types'
+
+interface ProcessImageResponse {
+  success: boolean
+  processedImage: string
+  originalFormat: string
+  originalSize: {
+    width: number
+    height: number
+  }
+  enhancedSize: number
+}
 
 // iPhone-style enhancement using Sharp image processing
 // This provides high-quality enhancement without external API dependencies

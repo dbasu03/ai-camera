@@ -2,7 +2,8 @@
 
 import { useState } from 'react'
 import { Download, ChevronDown } from 'lucide-react'
-import type { ImageFormat } from '@/types'
+
+type ImageFormat = 'png' | 'jpg' | 'jpeg'
 
 interface DownloadButtonProps {
   onDownload: (format: ImageFormat) => void

@@ -1,5 +1,21 @@
 import sharp from 'sharp'
-import type { ImageMetadata, EnhancementOptions, ImageFormat } from '@/types'
+
+export interface ImageMetadata {
+  width: number
+  height: number
+  format: string
+  size: number
+}
+
+export interface EnhancementOptions {
+  brightness?: number
+  saturation?: number
+  sharpness?: number
+  contrast?: number
+  noiseReduction?: boolean
+}
+
+export type ImageFormat = 'png' | 'jpg' | 'jpeg'
 
 /**
  * Get image metadata without processing
@@ -59,50 +75,52 @@ export async function enhanceImage(
   buffer: Buffer, 
   options: EnhancementOptions = {}
 ): Promise<Buffer> {
-  const {
-    brightness = 1.1,
-    saturation = 1.2,
-    sharpness = 1.5,
-    contrast = 1.1,
-    noiseReduction = true
-  } = options
+  try {
+    const {
+      brightness = 1.1,
+      saturation = 1.2,
+      sharpness = 1.5,
+      contrast = 1.1,
+      noiseReduction = true
+    } = options
 
-  let pipeline = sharp(buffer)
+    // Create a new sharp instance to avoid any potential issues
+    const image = sharp(buffer)
 
-  // Resize if needed (maintain aspect ratio, max 2048px)
-  pipeline = pipeline.resize(2048, 2048, {
-    fit: 'inside',
-    withoutEnlargement: false
-  })
-
-  // Apply iPhone-style enhancements
-  pipeline = pipeline
-    .modulate({
-      brightness,
-      saturation,
-      hue: 0
-    })
-    .linear(contrast, -(128 * contrast) + 128) // Adjust contrast
-    .sharpen({
-      sigma: sharpness,
-      m1: 0.5,
-      m2: 2.0,
-      x1: 2.0,
-      y2: 10.0
+    // Resize if needed (maintain aspect ratio, max 2048px)
+    const resized = image.resize(2048, 2048, {
+      fit: 'inside',
+      withoutEnlargement: false
     })
 
-  // Noise reduction (simulated with blur + sharpen)
-  if (noiseReduction) {
-    pipeline = pipeline
-      .blur(0.3)
-      .sharpen({ sigma: 1.0 })
+    // Apply iPhone-style enhancements
+    const enhanced = resized
+      .modulate({
+        brightness,
+        saturation,
+        hue: 0
+      })
+      .linear(contrast, -(128 * contrast) + 128) // Adjust contrast
+      .sharpen({
+        sigma: sharpness,
+        m1: 0.5,
+        m2: 2.0,
+        x1: 2.0,
+        y2: 10.0
+      })
+
+    // Noise reduction (simulated with blur + sharpen)
+    const final = noiseReduction 
+      ? enhanced.blur(0.3).sharpen({ sigma: 1.0 }).normalize()
+      : enhanced.normalize()
+
+    // Convert to high-quality PNG
+    return final.png({ quality: 95 }).toBuffer()
+  } catch (error) {
+    console.error('Error in enhanceImage:', error)
+    // Fallback: return original buffer
+    return buffer
   }
-
-  // Normalize colors
-  pipeline = pipeline.normalize()
-
-  // Convert to high-quality PNG
-  return pipeline.png({ quality: 95 }).toBuffer()
 }
 
 /**
@@ -113,16 +131,22 @@ export async function convertImageFormat(
   format: ImageFormat,
   quality: number = 95
 ): Promise<Buffer> {
-  let pipeline = sharp(buffer)
+  try {
+    const image = sharp(buffer)
 
-  switch (format) {
-    case 'png':
-      return pipeline.png({ quality }).toBuffer()
-    case 'jpg':
-    case 'jpeg':
-      return pipeline.jpeg({ quality, progressive: true }).toBuffer()
-    default:
-      throw new Error(`Unsupported format: ${format}`)
+    switch (format) {
+      case 'png':
+        return image.png({ quality }).toBuffer()
+      case 'jpg':
+      case 'jpeg':
+        return image.jpeg({ quality, progressive: true }).toBuffer()
+      default:
+        throw new Error(`Unsupported format: ${format}`)
+    }
+  } catch (error) {
+    console.error('Error in convertImageFormat:', error)
+    // Fallback: return original buffer
+    return buffer
   }
 }
 
@@ -133,13 +157,19 @@ export async function createThumbnail(
   buffer: Buffer,
   size: number = 300
 ): Promise<Buffer> {
-  return sharp(buffer)
-    .resize(size, size, {
-      fit: 'cover',
-      position: 'center'
-    })
-    .jpeg({ quality: 80 })
-    .toBuffer()
+  try {
+    return sharp(buffer)
+      .resize(size, size, {
+        fit: 'cover',
+        position: 'center'
+      })
+      .jpeg({ quality: 80 })
+      .toBuffer()
+  } catch (error) {
+    console.error('Error in createThumbnail:', error)
+    // Fallback: return original buffer
+    return buffer
+  }
 }
 
 /**
